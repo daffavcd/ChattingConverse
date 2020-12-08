@@ -98,13 +98,25 @@
     </div>
     <!-- partial -->
 </body>
-@yield('script')
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
+    var my_id = "{{ Auth::id() }}";
+    var recepient_id = '';
     $(document).ready(function () {
-        // ajax setup form csrf token
+        Pusher.logToConsole = true;
+        var pusher = new Pusher('ea26d6c5f6515d01e62a', {
+            cluster: 'ap1'
+        });
+        var channel = pusher.subscribe('my-channel');
+        //Live channel
+        channel.bind('message-sent', function(data) {
+            if (my_id == data.from) {
+                $('#' + data.to).click();
+            }
+         });
        
     });
-    var recepient_id = '';
+    
     $('.contact').click(function () {
             $('.contact').removeClass('active');
             $(this).addClass('active');
@@ -156,8 +168,6 @@
                 },
                 complete: function () {
                     // scrollToBottomFunc();
-                    $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
-	                $('.message-input input').val(null);
 	                $('.contact.active .preview').html('<span>You: </span>' + message);
 	                $(".messages").animate({ scrollTop: $(document).height() }, "fast");
                 }

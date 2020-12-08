@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Broadcast;
+use Pusher\Pusher;
 
 class ChatController extends Controller
 {
@@ -50,14 +52,18 @@ class ChatController extends Controller
     {
         $user = Auth::user();
         $data = new \App\Message;
-     
+
         $data->text = $request->text;
         $data->sender_id = $user->id;
-        $data->sent_on= date("Y-m-d h:i:s");
-        $data->has_read=0;
+        $data->sent_on = date("Y-m-d h:i:s");
+        $data->has_read = 0;
         $data->recipient_id = $request->recepient_id;
 
         $data->save();
+
+        $to = $data->recipient_id;
+        $from = $data->sender_id; // sending from and to user id when pressed enter
+        event(new \App\Events\MessageSent($to, $from));
     }
 
     /**
@@ -77,8 +83,8 @@ class ChatController extends Controller
             ->select('m.*', 'u.name as sender_name', 'u2.name as recipient_name', 'u.profile_picture as sender_pp', 'u2.profile_picture as recipient_pp')
             ->leftJoin('users as u', 'u.id', '=', 'm.sender_id')
             ->leftJoin('users as u2', 'u2.id', '=', 'm.recipient_id')
-            ->whereIn('m.recipient_id', [$my_id,$user_id])
-            ->whereIn('m.sender_id', [$my_id,$user_id])
+            ->whereIn('m.recipient_id', [$my_id, $user_id])
+            ->whereIn('m.sender_id', [$my_id, $user_id])
             ->orderBy('m.id', 'asc')
             ->get();
         $to = \App\User::where('id', $user_id)->first();
