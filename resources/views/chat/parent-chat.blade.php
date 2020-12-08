@@ -26,7 +26,10 @@
                 <div class="wrap">
                     <img id="profile-img" src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}"
                         class="online" alt="" />
-                    <p>{{ $myprofile->name}}</p>
+                    @php
+                    $name =explode(' ',$myprofile->name);
+                    @endphp
+                    <p><?php echo $name[0]." ".$name[1] ?> </p>
                     <i class="fa fa-chevron-down expand-button" aria-hidden="true"></i>
                     <div id="status-options">
                         <ul>
@@ -110,8 +113,11 @@
         var channel = pusher.subscribe('my-channel');
         //Live channel
         channel.bind('message-sent', function(data) {
-            if (my_id == data.from) {
-                $('#' + data.to).click();
+            // alert("idku "+ my_id + ",gambardiklik " + recepient_id + ",channel.from " + data.from + ",channel.to " + data.to);
+            if(data.to == my_id  && data.from == recepient_id){
+                $('#' + recepient_id).click();
+            }else if(data.from == my_id && data.to == recepient_id){
+                $('#' + recepient_id).click();
             }
          });
        
@@ -129,16 +135,21 @@
                 cache: false,
                 success: function (data) {
                     $('#content').html(data);
-                    // scrollToBottomFunc();
+                    scrollToBottom();
                 }
             });
     });
+    function scrollToBottom(){
+        $(".messages").animate({ 
+            scrollTop: $(document).height() 
+        }, "fast");
+        document.getElementById("text").focus();
+    }
 </script>
 <script>
-    $(".messages").animate({ scrollTop: $(document).height() }, "fast");
-
     $("#profile-img").click(function() {
-	    $("#status-options").toggleClass("active");
+        $("#status-options").toggleClass("active");
+        
     });
     function submit() {
         newMessage();
@@ -169,7 +180,7 @@
                 complete: function () {
                     // scrollToBottomFunc();
 	                $('.contact.active .preview').html('<span>You: </span>' + message);
-	                $(".messages").animate({ scrollTop: $(document).height() }, "fast");
+                    scrollToBottom();
                 }
             });
         }
