@@ -77,9 +77,9 @@ class ChatController extends Controller
             ->select('m.*', 'u.name as sender_name', 'u2.name as recipient_name', 'u.profile_picture as sender_pp', 'u2.profile_picture as recipient_pp')
             ->leftJoin('users as u', 'u.id', '=', 'm.sender_id')
             ->leftJoin('users as u2', 'u2.id', '=', 'm.recipient_id')
-            ->where('m.recipient_id', $my_id)
-            ->where('m.sender_id', $user_id)
-            ->orderByDesc('m.id')
+            ->whereIn('m.recipient_id', [$my_id,$user_id])
+            ->whereIn('m.sender_id', [$my_id,$user_id])
+            ->orderBy('m.id', 'asc')
             ->get();
         $to = \App\User::where('id', $user_id)->first();
         // dd($messages);

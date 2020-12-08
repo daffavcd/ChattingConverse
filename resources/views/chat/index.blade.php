@@ -22,7 +22,7 @@
 <div class="message-input">
     <div class="wrap">
             @csrf
-            <input type="text" id="text" name="text" placeholder="Write your message..." />
+            <input type="text" autocomplete="off" id="text" name="text" placeholder="Write your message..." />
             <i class="fa fa-paperclip attachment" aria-hidden="true"></i>
             <button onclick="submit()" class="submit"><i class="fa fa-paper-plane" aria-hidden="true"></i></button>
     </div>

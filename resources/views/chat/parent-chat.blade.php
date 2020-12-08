@@ -155,7 +155,7 @@
                 error: function (jqXHR, status, err) {
                 },
                 complete: function () {
-                    scrollToBottomFunc();
+                    // scrollToBottomFunc();
                     $('<li class="sent"><img src="http://emilcarlsson.se/assets/mikeross.png" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
 	                $('.message-input input').val(null);
 	                $('.contact.active .preview').html('<span>You: </span>' + message);
