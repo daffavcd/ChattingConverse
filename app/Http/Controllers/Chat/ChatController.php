@@ -49,11 +49,13 @@ class ChatController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        $data = new \App\Chat;
-
+        $data = new \App\Message;
+     
         $data->text = $request->text;
         $data->sender_id = $user->id;
-        $data->recipient_id = $request->recipient_id;
+        $data->sent_on= date("Y-m-d h:i:s");
+        $data->has_read=0;
+        $data->recipient_id = $request->recepient_id;
 
         $data->save();
     }
@@ -70,18 +72,18 @@ class ChatController extends Controller
         DB::enableQueryLog();
         // Setelah diklik langsung update sudah dibaca
         \App\Message::where(['sender_id' => $user_id, 'recipient_id' => $my_id])->update(['has_read' => 1]);
-
         // ambil message
         $messages = DB::table('messages as m')
             ->select('m.*', 'u.name as sender_name', 'u2.name as recipient_name', 'u.profile_picture as sender_pp', 'u2.profile_picture as recipient_pp')
             ->leftJoin('users as u', 'u.id', '=', 'm.sender_id')
             ->leftJoin('users as u2', 'u2.id', '=', 'm.recipient_id')
-            ->where('m.recipient_id',$my_id)
-            ->where('m.sender_id',$user_id)
+            ->where('m.recipient_id', $my_id)
+            ->where('m.sender_id', $user_id)
             ->orderByDesc('m.id')
             ->get();
+        $to = \App\User::where('id', $user_id)->first();
         // dd($messages);
-        return view('chat/index', ['messages' => $messages]);
+        return view('chat/index', ['messages' => $messages], ['to' => $to]);
     }
 
     /**

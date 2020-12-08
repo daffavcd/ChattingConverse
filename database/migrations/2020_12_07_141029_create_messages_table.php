@@ -16,7 +16,7 @@ class CreateMessagesTable extends Migration
         Schema::create('messages', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->longText('text');
-            $table->enum('type', ['file', 'image']);
+            $table->enum('type', ['file', 'image'])->nullable();
             $table->dateTime('sent_on', 0);
             $table->boolean('has_read');
             $table->integer('sender_id');
