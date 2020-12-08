@@ -12,9 +12,4 @@
 */
 Auth::routes();
 Route::get('/','Chat\ChatController@index');
-Route::get('chat', 'Chat\ChatController@fetchChat');
-Route::post('chat', 'Chat\ChatController@sendChat');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('chat', 'Chat\ChatController');
