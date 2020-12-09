@@ -17,6 +17,9 @@
     <link rel="stylesheet" href="{{asset('css/chat.css')}}">
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
+<style>
+    
+</style>
 
 <body>
     <input type="hidden" name="_token" id="csrf" value="{{Session::token()}}">
@@ -76,13 +79,28 @@
             <div id="contacts">
                 <ul>
                     @foreach ($contacts as $item)
+                    <?php
+                    $last = DB::table('messages as m')
+                        ->select('m.*')
+                        ->where([
+                            ['m.recipient_id', '=', $item->id],
+                            ['m.sender_id', '=', Auth::id()],
+                         ])
+                        ->orWhere([
+                            ['m.recipient_id', '=', Auth::id()],
+                            ['m.sender_id', '=', $item->id],
+                        ])
+                        ->orderBy('m.id', 'desc')
+                        ->first();
+                    ?>
                     <li class="contact" id="{{ $item->id }}">
                         <div class="wrap">
                             <span class="contact-status online"></span>
                             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />
                             <div class="meta">
                                 <p class="name">{{$item->name}}</p>
-                                <p class="preview">You just got LITT up, Mike.</p>
+                                <p class="preview">@if (@$last->sender_id == Auth::id()) <span>You: </span> @endif
+                                    {{@$last->text }}</p>
                             </div>
                         </div>
                     </li>
@@ -116,15 +134,19 @@
             // alert("idku "+ my_id + ",gambardiklik " + recepient_id + ",channel.from " + data.from + ",channel.to " + data.to);
             if(data.to == my_id  && data.from == recepient_id){
                 loadChat();
+                loadContact();
             }else if(data.from == my_id && data.to == recepient_id){
                 loadChat();
+                loadContact();
+            }else{
+                loadContact();
             }
          });
        
     });
-    </script>
-    <script>
-    $('.contact').click(function () {
+</script>
+<script type="text/javascript">
+    $(document).on("click", ".contact", function(e) {
             $('.contact').removeClass('active');
             $(this).addClass('active');
             recipient_id = $(this).attr('id');
@@ -140,7 +162,7 @@
                     loadChat();
                 }
             });
-    });
+        });
 
     function loadChat(){
         $.ajax({
@@ -157,7 +179,19 @@
     function scrollToBottom(){
         $(".messages").animate({ 
             scrollTop: $(document).height() 
-        }, "fast");
+        }, 0);
+    }
+
+    function loadContact(){
+        $.ajax({
+                type: "get",
+                url: "showContact", 
+                data: "",
+                cache: false,
+                success: function (data) {
+                    $('#contacts').html(data);
+                }
+            });
     }
 </script>
 <script>
@@ -192,8 +226,6 @@
                 error: function (jqXHR, status, err) {
                 },
                 complete: function () {
-                    // scrollToBottomFunc();
-	                $('.contact.active .preview').html('<span>You: </span>' + message);
                     scrollToBottom();
                 }
             });
