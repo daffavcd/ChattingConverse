@@ -75,9 +75,14 @@ class ChatController extends Controller
     public function show($user_id)
     {
         $my_id = Auth::id();
+
+        $to = \App\User::where('id', $user_id)->first();
+        return view('chat/index', ['to' => $to]);
+    }
+    public function showMessages($user_id)
+    {
+        $my_id = Auth::id();
         DB::enableQueryLog();
-        // Setelah diklik langsung update sudah dibaca
-        // \App\Message::where(['sender_id' => $user_id, 'recipient_id' => $my_id])->update(['has_read' => 1]);
         // ambil message
         $messages = DB::table('messages as m')
             ->select('m.*', 'u.name as sender_name', 'u2.name as recipient_name', 'u.profile_picture as sender_pp')
@@ -93,9 +98,9 @@ class ChatController extends Controller
             ])
             ->orderBy('m.id', 'asc')
             ->get();
-            // dd($messages);
+        // dd($messages);
         $to = \App\User::where('id', $user_id)->first();
-        return view('chat/index', ['messages' => $messages], ['to' => $to]);
+        return view('chat/messages', ['messages' => $messages], ['to' => $to]);
     }
 
     /**

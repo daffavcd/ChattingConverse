@@ -13,3 +13,5 @@
 Auth::routes();
 Route::get('/','Chat\ChatController@index');
 Route::resource('chat', 'Chat\ChatController');
+Route::get('/chat/{id}/showMessages','Chat\ChatController@showMessages');
+

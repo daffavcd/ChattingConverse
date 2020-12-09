@@ -7,17 +7,8 @@
         <i class="fa fa-instagram" aria-hidden="true"></i>
     </div>
 </div>
-<div class="messages">
-    <ul>
-        @foreach ($messages as $item)
-
-        <li class="@if ($item->sender_id == Auth::id()) sent @else replies @endif">
-            <img src="{{asset('storage/profile_pict/'.$item->sender_pp) }}" alt="" />
-            <p>{{$item->text}}</p>
-        </li>
-        @endforeach
-
-    </ul>
+<div class="messages" id="messages">
+    
 </div>
 <div class="message-input">
     <div class="wrap">

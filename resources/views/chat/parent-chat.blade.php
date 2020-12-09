@@ -110,23 +110,25 @@
         var pusher = new Pusher('ea26d6c5f6515d01e62a', {
             cluster: 'ap1'
         });
-        var channel = pusher.subscribe('my-channel');
         //Live channel
+        var channel = pusher.subscribe('my-channel');
         channel.bind('message-sent', function(data) {
             // alert("idku "+ my_id + ",gambardiklik " + recepient_id + ",channel.from " + data.from + ",channel.to " + data.to);
             if(data.to == my_id  && data.from == recepient_id){
-                $('#' + recepient_id).click();
+                loadChat();
             }else if(data.from == my_id && data.to == recepient_id){
-                $('#' + recepient_id).click();
+                loadChat();
             }
          });
        
     });
-    
+    </script>
+    <script>
     $('.contact').click(function () {
             $('.contact').removeClass('active');
             $(this).addClass('active');
             recipient_id = $(this).attr('id');
+            // isi variable global kontak yang di klik
             recepient_id=recipient_id;
             $.ajax({
                 type: "get",
@@ -135,15 +137,27 @@
                 cache: false,
                 success: function (data) {
                     $('#content').html(data);
-                    scrollToBottom();
+                    loadChat();
                 }
             });
     });
+
+    function loadChat(){
+        $.ajax({
+                type: "get",
+                url: "chat/" + recipient_id + "/showMessages", // get content
+                data: "",
+                cache: false,
+                success: function (data) {
+                    $('#messages').html(data);
+                    scrollToBottom();
+                }
+            });
+    }
     function scrollToBottom(){
         $(".messages").animate({ 
             scrollTop: $(document).height() 
         }, "fast");
-        document.getElementById("text").focus();
     }
 </script>
 <script>
