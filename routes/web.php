@@ -10,7 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes();
+Route::get('/','Chat\ChatController@index');
+Route::resource('chat', 'Chat\ChatController');
+Route::get('/chat/{id}/showMessages','Chat\ChatController@showMessages');
 
-Route::get('/', function () {
-    return view('chat\index');
-});

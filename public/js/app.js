@@ -37272,7 +37272,28 @@ module.exports = function(module) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
+__webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js"); // const app = new Vue({
+//     el: '#app',
+//     data: {
+//         messages: []
+//     },
+//     created() {
+//         this.fetchMessages();
+//     },
+//     methods: {
+//         fetchMessages() {
+//             axios.get('/messages').then(response => {
+//                 this.messages = response.data;
+//             });
+//         },
+//         addMessage(message) {
+//             this.messages.push(message);
+//             axios.post('/messages', message).then(response => {
+//               console.log(response.data);
+//             });
+//         }
+//     }
+// });
 
 /***/ }),
 
