@@ -40,7 +40,6 @@
         border-radius: .25rem;
         margin-top: 20px;
     }
-    
 </style>
 
 <body>
@@ -102,6 +101,14 @@
                 <ul>
                     @foreach ($contacts as $item)
                     <?php
+                    $notif=DB::table('messages as m')
+                        ->select(DB::raw('count(*) as not_read'))
+                        ->where([
+                            ['m.recipient_id', '=', Auth::id()],
+                            ['m.sender_id', '=', $item->id],
+                        ])
+                        ->where('has_read',0)
+                        ->first();
                     $last = DB::table('messages as m')
                         ->select('m.*')
                         ->where([
@@ -116,18 +123,20 @@
                         ->first();
                     ?>
                     <li class="contact" id="{{ $item->id }}">
-                        <div class="wrap">
+                        <div class="wrap" @if($notif->not_read==null) style="float:none" @endif>
                             <span class="contact-status online"></span>
                             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />
                             <div class="meta">
                                 <p class="name">{{$item->name}}</p>
-                                <p class="preview">@if (@$last->sender_id == Auth::id()) <span>You: </span> @endif
+                                <p class="preview">@if(@$last==null)<span>Type your first conversation </span> @else @if(@$last->sender_id == Auth::id()) <span>You: </span> @endif @endif
                                     {{@$last->text }}</p>
                             </div>
                         </div>
+                        @if($notif->not_read!=null)
                         <div class="notif">
-                            <span class="badge badge-light">4</span>
+                            <span class="badge badge-light">{{@$notif->not_read}}</span>
                         </div>
+                        @endif
                     </li>
                     @endforeach
                 </ul>
@@ -196,6 +205,7 @@
                 data: "",
                 cache: false,
                 success: function (data) {
+                    loadContact(recepient_id);
                     $('#messages').html(data);
                     scrollToBottom();
                 }

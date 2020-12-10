@@ -75,12 +75,11 @@ class ChatController extends Controller
     public function show($user_id)
     {
         $my_id = Auth::id();
-
         $to = \App\User::where('id', $user_id)->first();
         return view('chat/index', ['to' => $to]);
     }
     public function showContact($id)
-    {
+    {  
         $contacts = DB::table('users as u')
             ->select('u.*')
             ->where('u.id', '!=', Auth::id())
@@ -92,6 +91,8 @@ class ChatController extends Controller
     public function showMessages($user_id)
     {
         $my_id = Auth::id();
+        \App\Message::where(['sender_id' => $user_id, 'recipient_id' => $my_id])->update(['has_read' => 1]);
+
         DB::enableQueryLog();
         // ambil message
         $messages = DB::table('messages as m')
