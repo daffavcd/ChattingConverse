@@ -20,8 +20,12 @@
             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />
             <div class="meta">
                 <p class="name">{{$item->name}}</p>
-            <p class="preview">@if (@$last->sender_id == Auth::id()) <span>You: </span> @endif {{@$last->text }}</p>
+                <p class="preview">@if (@$last->sender_id == Auth::id()) <span>You: </span> @endif
+                    {{@$last->text }}</p>
             </div>
+        </div>
+        <div class="notif">
+            <span class="badge badge-light">4</span>
         </div>
     </li>
     @endforeach

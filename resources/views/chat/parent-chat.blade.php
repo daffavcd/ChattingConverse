@@ -18,6 +18,28 @@
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
 <style>
+    .btn .badge {
+        position: relative;
+        top: -1px;
+    }
+
+    .badge-light {
+        color: #212529;
+        background-color: #f8f9fa;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: .25em .4em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25rem;
+        margin-top: 20px;
+    }
     
 </style>
 
@@ -102,6 +124,9 @@
                                 <p class="preview">@if (@$last->sender_id == Auth::id()) <span>You: </span> @endif
                                     {{@$last->text }}</p>
                             </div>
+                        </div>
+                        <div class="notif">
+                            <span class="badge badge-light">4</span>
                         </div>
                     </li>
                     @endforeach
