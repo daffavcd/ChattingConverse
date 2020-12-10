@@ -79,7 +79,7 @@ class ChatController extends Controller
         $to = \App\User::where('id', $user_id)->first();
         return view('chat/index', ['to' => $to]);
     }
-    public function showContact()
+    public function showContact($id)
     {
         $contacts = DB::table('users as u')
             ->select('u.*')
@@ -87,7 +87,7 @@ class ChatController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        return view('chat/contacts', ['contacts' => $contacts]);
+        return view('chat/contacts', ['contacts' => $contacts,'recipient_id'=>$id]);
     }
     public function showMessages($user_id)
     {

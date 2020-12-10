@@ -147,7 +147,7 @@
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script>
     var my_id = "{{ Auth::id() }}";
-    var recepient_id = '';
+    var recepient_id = null;
     $(document).ready(function () {
         Pusher.logToConsole = true;
         var pusher = new Pusher('ea26d6c5f6515d01e62a', {
@@ -159,12 +159,12 @@
             // alert("idku "+ my_id + ",gambardiklik " + recepient_id + ",channel.from " + data.from + ",channel.to " + data.to);
             if(data.to == my_id  && data.from == recepient_id){
                 loadChat();
-                loadContact();
+                loadContact(recepient_id);
             }else if(data.from == my_id && data.to == recepient_id){
                 loadChat();
-                loadContact();
+                loadContact(recepient_id);
             }else{
-                loadContact();
+                loadContact(recepient_id);
             }
          });
        
@@ -203,18 +203,18 @@
     }
     function scrollToBottom(){
         $(".messages").animate({ 
-            scrollTop: $(document).height() 
+            scrollTop: $(".messages")[0].scrollHeight
         }, 0);
     }
 
-    function loadContact(){
+    function loadContact(key){
         $.ajax({
                 type: "get",
-                url: "showContact", 
+                url: "showContact/" + key, //karena jika habis load html element tidak tercantum di dom.
                 data: "",
                 cache: false,
                 success: function (data) {
-                    $('#contacts').html(data);
+                        $('#contacts').html(data);
                 }
             });
     }

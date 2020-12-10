@@ -12,7 +12,7 @@
 */
 Auth::routes();
 Route::get('/','Chat\ChatController@index');
-Route::get('/showContact','Chat\ChatController@showContact');
+Route::get('/showContact/{id}','Chat\ChatController@showContact');
 Route::resource('chat', 'Chat\ChatController');
 Route::get('/chat/{id}/showMessages','Chat\ChatController@showMessages');
 

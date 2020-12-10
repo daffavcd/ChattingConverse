@@ -14,7 +14,7 @@
         ->orderBy('m.id', 'desc')
         ->first();
     ?>
-    <li class="contact" id="{{ $item->id }}">
+    <li class="contact @if (@$recipient_id == $item->id) active @endif" id="{{ $item->id }}">
         <div class="wrap">
             <span class="contact-status online"></span>
             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />

@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="messages" id="messages">
-    
+
 </div>
 <div class="message-input">
     <div class="wrap">
