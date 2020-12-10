@@ -79,6 +79,16 @@ class ChatController extends Controller
         $to = \App\User::where('id', $user_id)->first();
         return view('chat/index', ['to' => $to]);
     }
+    public function showContact()
+    {
+        $contacts = DB::table('users as u')
+            ->select('u.*')
+            ->where('u.id', '!=', Auth::id())
+            ->orderByDesc('id')
+            ->get();
+
+        return view('chat/contacts', ['contacts' => $contacts]);
+    }
     public function showMessages($user_id)
     {
         $my_id = Auth::id();
