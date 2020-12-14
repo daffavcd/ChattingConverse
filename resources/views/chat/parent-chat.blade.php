@@ -132,11 +132,9 @@
                                     {{@$last->text }}</p>
                             </div>
                         </div>
-                        @if($notif->not_read!=null)
-                        <div class="notif">
+                        <div class="notif" @if($notif->not_read==null) style="display:none"  @endif>
                             <span class="badge badge-light">{{@$notif->not_read}}</span>
                         </div>
-                        @endif
                     </li>
                     @endforeach
                 </ul>
