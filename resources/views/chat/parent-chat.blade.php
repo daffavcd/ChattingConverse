@@ -128,11 +128,12 @@
                             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />
                             <div class="meta">
                                 <p class="name">{{$item->name}}</p>
-                                <p class="preview">@if(@$last==null)<span>Type your first conversation </span> @else @if(@$last->sender_id == Auth::id()) <span>You: </span> @endif @endif
+                                <p class="preview">@if(@$last==null)<span>Type your first conversation </span> @else
+                                    @if(@$last->sender_id == Auth::id()) <span>You: </span> @endif @endif
                                     {{@$last->text }}</p>
                             </div>
                         </div>
-                        <div class="notif" @if($notif->not_read==null) style="display:none"  @endif>
+                        <div class="notif" @if($notif->not_read==null) style="display:none" @endif>
                             <span class="badge badge-light">{{@$notif->not_read}}</span>
                         </div>
                     </li>
@@ -152,6 +153,7 @@
     <!-- partial -->
 </body>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+{{-- SCRIPT REALTIME --}}
 <script>
     var my_id = "{{ Auth::id() }}";
     var recepient_id = null;
@@ -177,6 +179,7 @@
        
     });
 </script>
+{{-- SCRIPT LOAD-LOAD GET --}}
 <script type="text/javascript">
     $(document).on("click", ".contact", function(e) {
             $('.contact').removeClass('active');
@@ -227,11 +230,8 @@
             });
     }
 </script>
+{{-- SCRIPT ACTION INPUT FORM --}}
 <script>
-    $("#profile-img").click(function() {
-        $("#status-options").toggleClass("active");
-        
-    });
     function submit() {
         newMessage();
     }
@@ -243,8 +243,17 @@
         }
     });
     function newMessage() {
+        cek_upload =$("#upload").val()
         message = $("#text").val();
-        if (message != '' && recepient_id != '') {
+
+        var file_data = $("#upload").prop("files")[0];
+        var form_data = new FormData();                  
+	    form_data.append("file", file_data)            
+	    form_data.append("recepient_id", recepient_id)                 // Adding extra parameters to form_data
+        form_data.append("_token", $("#csrf").val()) 
+        form_data.append("text", message)
+
+        if (message != '' && recepient_id != '' && cek_upload =='') {
             $("#text").val('');
             $.ajax({
                 type: "POST",
@@ -262,11 +271,32 @@
                     scrollToBottom();
                 }
             });
+        }else if(recepient_id != '' && file_data !=''){
+            $("#text").val('');
+            $.ajax({
+                type: "POST",
+                url: "chat",
+                processData: false, // important
+                contentType: false, // important
+                data: form_data,
+                cache: false,
+                success: function (data) {
+                },
+                error: function (jqXHR, status, err) {
+                },
+                complete: function () {
+                    $('#preview').fadeOut();
+                    $('#messages').show();
+                    $('#upload').val(null);
+                    scrollToBottom();
+                }
+            });
         }
     }
-
-
-// $(".expand-button").click(function() {
+</script>
+{{-- DROPDOWN SCRIPT --}}
+<script>
+    // $(".expand-button").click(function() {
 //   $("#profile").toggleClass("expanded");
 // 	$("#contacts").toggleClass("expanded");
 // });
@@ -294,7 +324,10 @@
 // 	$("#status-options").removeClass("active");
 // });
 
-
+$("#profile-img").click(function() {
+        $("#status-options").toggleClass("active");
+        
+    });
 
 
 </script>

@@ -18,7 +18,7 @@
         </div>
         <div class="modal-body">
                 <img class="tampung" id="image_preview" src="" alt="image error" />
-                <img class="tampung" id="file_preview" style="width: 30px;margin-top: 100px" src="{{asset('image-core/document.png')}}" alt="your image" />
+                <i class="fa fa-file fa-2x" style="margin-top: 100px" id="file_preview" aria-hidden="true"></i><br><br>
                 <p class="tampung" id="text_preview">awdwad.txt</p>
         </div>
     </div>
