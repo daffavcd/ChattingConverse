@@ -1,4 +1,5 @@
-<p align="center"><a href="https://thesatanictemple.com/" target="_blank"><img src="https://i.pinimg.com/originals/5b/11/a5/5b11a542cc5ea8f3a826225c7f550bde.png" width="400"></a></p>
+<p align="center"><a href="https://thesatanictemple.com/" target="_blank"><img src="https://image.freepik.com/free-vector/baphomet-cute-kawaii_60223-36.jpg"></a></p>
+
 # REPORT BUG HERE (*AS FAR AS WE KNOW)
 ```bash
 dont forget to delete this list when its already done.
