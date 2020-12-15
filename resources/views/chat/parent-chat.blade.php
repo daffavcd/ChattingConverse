@@ -292,6 +292,8 @@
                 }
             });
         }
+        $("#text").prop('disabled', false);
+        $('#text').attr("placeholder", "Write your message...");
     }
 </script>
 {{-- DROPDOWN SCRIPT --}}

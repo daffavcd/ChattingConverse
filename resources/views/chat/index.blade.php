@@ -17,9 +17,9 @@
             <h2>Preview</h2>
         </div>
         <div class="modal-body">
-                <img class="tampung" id="image_preview" src="" alt="image error" />
-                <i class="fa fa-file fa-2x" style="margin-top: 100px" id="file_preview" aria-hidden="true"></i><br><br>
-                <p class="tampung" id="text_preview">awdwad.txt</p>
+            <img class="tampung" id="image_preview" src="" alt="image error" />
+            <i class="fa fa-file fa-2x" style="margin-top: 100px" id="file_preview" aria-hidden="true"></i><br><br>
+            <p class="tampung" id="text_preview">awdwad.txt</p>
         </div>
     </div>
 </div>
@@ -34,7 +34,7 @@
 </div>
 </div>
 <script>
-     var text_name =null;
+    var text_name =null;
     $(function(){
     $("#upload_link").on('click', function(e){
         e.preventDefault();
@@ -46,6 +46,8 @@
         var fileType = file["type"];
         var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
         if ($.inArray(fileType, validImageTypes) < 0) {
+            $("#text").prop('disabled', true);
+            $('#text').attr("placeholder", "You can't add caption on a document file.");
             $('#file_preview').show();
             $('#image_preview').hide();
             $('#messages').hide();
@@ -53,6 +55,8 @@
             $('#preview').fadeIn();
         }else{
             if (input.files && input.files[0]) {
+                $("#text").prop('disabled', false);
+                $('#text').attr("placeholder", "Add a caption...");
                 var reader = new FileReader();
                 reader.onload = function (e) {
                    $('#image_preview').show();
