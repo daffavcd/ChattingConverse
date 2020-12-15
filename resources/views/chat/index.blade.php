@@ -11,14 +11,14 @@
 
 </div>
 <div class="preview" id="preview" style="display: none">
-    <div class="modal-content">
-        <div class="modal-header">
-            <span class="close" onclick="closePreview()" style="cursor: pointer">&times;</span>
+    <div class="tampil-content">
+        <div class="tampil-header">
+            <span class="tampil-close" onclick="closePreview()" style="cursor: pointer">&times;</span>
             <h2>Preview</h2>
         </div>
-        <div class="modal-body">
+        <div class="tampil-body">
             <img class="tampung" id="image_preview" src="" alt="image error" />
-            <i class="fa fa-file fa-2x" style="margin-top: 100px" id="file_preview" aria-hidden="true"></i><br><br>
+            <i class="fa fa-file fa-2x" style="margin-top: 150px" id="file_wew" aria-hidden="true"></i><br><br>
             <p class="tampung" id="text_preview">awdwad.txt</p>
         </div>
     </div>
@@ -48,7 +48,7 @@
         if ($.inArray(fileType, validImageTypes) < 0) {
             $("#text").prop('disabled', true);
             $('#text').attr("placeholder", "You can't add caption on a document file.");
-            $('#file_preview').show();
+            $('#file_wew').show();
             $('#image_preview').hide();
             $('#messages').hide();
             $('#text_preview').html(text_name);
@@ -60,10 +60,10 @@
                 var reader = new FileReader();
                 reader.onload = function (e) {
                    $('#image_preview').show();
-                   $('#file_preview').hide();
                    $('#image_preview').attr('src', e.target.result);
                 }
                 reader.readAsDataURL(input.files[0]);
+                $('#file_wew').hide();
                $('#messages').hide();
                $('#text_preview').html(text_name);
                $('#preview').fadeIn();

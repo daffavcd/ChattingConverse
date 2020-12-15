@@ -126,11 +126,23 @@
                         <div class="wrap" @if($notif->not_read==null) style="float:none" @endif>
                             <span class="contact-status online"></span>
                             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />
-                            <div class="meta">
+                            <div class="meta" style="color: #e1f4f3">
                                 <p class="name">{{$item->name}}</p>
-                                <p class="preview">@if(@$last==null)<span>Type your first conversation </span> @else
-                                    @if(@$last->sender_id == Auth::id()) <span>You: </span> @endif @endif
-                                    {{@$last->text }}</p>
+                                <p class="preview">
+                                    @if(@$last==null)
+                                    <span>Type your first conversation </span>
+                                    @else
+                                    @if(@$last->sender_id == Auth::id())
+                                    <span>You: </span>
+                                    @endif
+                                    @endif
+                                    @if(@$last->type=='image')
+                                    <i class="fa fa-camera "></i>&nbsp Photo</p>
+                                @elseif(@$last->type=='file')
+                                <i class="fa fa-file-text "></i>&nbsp{{$last->file}}</p>
+                                @else
+                                {{$last->text}}</p>
+                                @endif
                             </div>
                         </div>
                         <div class="notif" @if($notif->not_read==null) style="display:none" @endif>

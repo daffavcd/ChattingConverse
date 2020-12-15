@@ -9,7 +9,7 @@
         <div class="file-preview" @if ($item->sender_id == Auth::id()) style="float:left !important;color: #f5f5f5;"
             @else
             style="float:right !important;background:#f5f5f5 !important" @endif>
-            <img class="file-show" src="{{asset('storage/file/'.$item->file)}}" alt="image error" />
+            <img class="file-show image-show" src="{{asset('storage/file/'.$item->file)}}" title="{{$item->text}}" alt="image error" />
             @if($item->text!==null)
             <div class="container-file">
                 {{$item->text}}
@@ -32,3 +32,28 @@
     </li>
     @endforeach
 </ul>
+<div id="myModal" class="modal">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+</div>
+<script>
+    var modal = document.getElementById("myModal");
+    
+    var modalImg = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+      
+    $(document).on("click", ".image-show", function(e) {
+        modal.style.display = "block";
+        modalImg.src = this.src;
+        captionText.innerHTML = this.title;
+        });
+    
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+    
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() { 
+      modal.style.display = "none";
+    }
+</script>
