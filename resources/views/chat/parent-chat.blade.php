@@ -40,7 +40,6 @@
         border-radius: .25rem;
         margin-top: 20px;
     }
-    
 </style>
 
 <body>
@@ -102,6 +101,14 @@
                 <ul>
                     @foreach ($contacts as $item)
                     <?php
+                    $notif=DB::table('messages as m')
+                        ->select(DB::raw('count(*) as not_read'))
+                        ->where([
+                            ['m.recipient_id', '=', Auth::id()],
+                            ['m.sender_id', '=', $item->id],
+                        ])
+                        ->where('has_read',0)
+                        ->first();
                     $last = DB::table('messages as m')
                         ->select('m.*')
                         ->where([
@@ -116,17 +123,30 @@
                         ->first();
                     ?>
                     <li class="contact" id="{{ $item->id }}">
-                        <div class="wrap">
+                        <div class="wrap" @if($notif->not_read==null) style="float:none" @endif>
                             <span class="contact-status online"></span>
                             <img src="{{asset('storage/profile_pict/'.$item->profile_picture)}}" alt="" />
-                            <div class="meta">
+                            <div class="meta" style="color: #e1f4f3">
                                 <p class="name">{{$item->name}}</p>
-                                <p class="preview">@if (@$last->sender_id == Auth::id()) <span>You: </span> @endif
-                                    {{@$last->text }}</p>
+                                <p class="preview">
+                                    @if(@$last==null)
+                                    <span>Type your first conversation </span>
+                                    @else
+                                    @if(@$last->sender_id == Auth::id())
+                                    <span>You: </span>
+                                    @endif
+                                    @endif
+                                    @if(@$last->type=='image')
+                                    <i class="fa fa-camera "></i>&nbsp Photo</p>
+                                @elseif(@$last->type=='file')
+                                <i class="fa fa-file-text "></i>&nbsp{{$last->file}}</p>
+                                @else
+                                {{$last->text}}</p>
+                                @endif
                             </div>
                         </div>
-                        <div class="notif">
-                            <span class="badge badge-light">4</span>
+                        <div class="notif" @if($notif->not_read==null) style="display:none" @endif>
+                            <span class="badge badge-light">{{@$notif->not_read}}</span>
                         </div>
                     </li>
                     @endforeach
@@ -145,9 +165,10 @@
     <!-- partial -->
 </body>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+{{-- SCRIPT REALTIME --}}
 <script>
     var my_id = "{{ Auth::id() }}";
-    var recepient_id = '';
+    var recepient_id = null;
     $(document).ready(function () {
         Pusher.logToConsole = true;
         var pusher = new Pusher('ea26d6c5f6515d01e62a', {
@@ -159,17 +180,18 @@
             // alert("idku "+ my_id + ",gambardiklik " + recepient_id + ",channel.from " + data.from + ",channel.to " + data.to);
             if(data.to == my_id  && data.from == recepient_id){
                 loadChat();
-                loadContact();
+                loadContact(recepient_id);
             }else if(data.from == my_id && data.to == recepient_id){
                 loadChat();
-                loadContact();
+                loadContact(recepient_id);
             }else{
-                loadContact();
+                loadContact(recepient_id);
             }
          });
        
     });
 </script>
+{{-- SCRIPT LOAD-LOAD GET --}}
 <script type="text/javascript">
     $(document).on("click", ".contact", function(e) {
             $('.contact').removeClass('active');
@@ -196,6 +218,7 @@
                 data: "",
                 cache: false,
                 success: function (data) {
+                    loadContact(recepient_id);
                     $('#messages').html(data);
                     scrollToBottom();
                 }
@@ -203,27 +226,24 @@
     }
     function scrollToBottom(){
         $(".messages").animate({ 
-            scrollTop: $(document).height() 
+            scrollTop: $(".messages")[0].scrollHeight
         }, 0);
     }
 
-    function loadContact(){
+    function loadContact(key){
         $.ajax({
                 type: "get",
-                url: "showContact", 
+                url: "showContact/" + key, //karena jika habis load html element tidak tercantum di dom.
                 data: "",
                 cache: false,
                 success: function (data) {
-                    $('#contacts').html(data);
+                        $('#contacts').html(data);
                 }
             });
     }
 </script>
+{{-- SCRIPT ACTION INPUT FORM --}}
 <script>
-    $("#profile-img").click(function() {
-        $("#status-options").toggleClass("active");
-        
-    });
     function submit() {
         newMessage();
     }
@@ -235,8 +255,17 @@
         }
     });
     function newMessage() {
+        cek_upload =$("#upload").val()
         message = $("#text").val();
-        if (message != '' && recepient_id != '') {
+
+        var file_data = $("#upload").prop("files")[0];
+        var form_data = new FormData();                  
+	    form_data.append("file", file_data)            
+	    form_data.append("recepient_id", recepient_id)                 // Adding extra parameters to form_data
+        form_data.append("_token", $("#csrf").val()) 
+        form_data.append("text", message)
+
+        if (message != '' && recepient_id != '' && cek_upload =='') {
             $("#text").val('');
             $.ajax({
                 type: "POST",
@@ -254,11 +283,34 @@
                     scrollToBottom();
                 }
             });
+        }else if(recepient_id != '' && file_data !=''){
+            $("#text").val('');
+            $.ajax({
+                type: "POST",
+                url: "chat",
+                processData: false, // important
+                contentType: false, // important
+                data: form_data,
+                cache: false,
+                success: function (data) {
+                },
+                error: function (jqXHR, status, err) {
+                },
+                complete: function () {
+                    $('#preview').fadeOut();
+                    $('#messages').show();
+                    $('#upload').val(null);
+                    scrollToBottom();
+                }
+            });
         }
+        $("#text").prop('disabled', false);
+        $('#text').attr("placeholder", "Write your message...");
     }
-
-
-// $(".expand-button").click(function() {
+</script>
+{{-- DROPDOWN SCRIPT --}}
+<script>
+    // $(".expand-button").click(function() {
 //   $("#profile").toggleClass("expanded");
 // 	$("#contacts").toggleClass("expanded");
 // });
@@ -286,7 +338,10 @@
 // 	$("#status-options").removeClass("active");
 // });
 
-
+$("#profile-img").click(function() {
+        $("#status-options").toggleClass("active");
+        
+    });
 
 
 </script>

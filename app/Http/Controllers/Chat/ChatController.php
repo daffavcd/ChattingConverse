@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Broadcast;
 use Pusher\Pusher;
+use Illuminate\Http\File;
+use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
 {
@@ -53,6 +55,24 @@ class ChatController extends Controller
         $user = Auth::user();
         $data = new \App\Message;
 
+        if (!empty($request->file)) {
+            $extension = $request->file('file')->extension();
+            $waktu = date('ymdhis');
+            $name_file = $waktu . '_' . $request->file('file')->getClientOriginalName();
+            $data->file = $name_file;
+            $request->file('file')->storeAs(
+                'file',
+                $name_file,
+                'public'
+            );
+            // untuk mempermudah preview saat proses pengambilan data
+            if($extension=='jpg' || $extension=='png' || $extension=='jpeg'){
+                $data->type = 'image';
+            }else{
+                $data->type = 'file';
+            }
+        }
+
         $data->text = $request->text;
         $data->sender_id = $user->id;
         $data->sent_on = date("Y-m-d h:i:s");
@@ -60,6 +80,7 @@ class ChatController extends Controller
         $data->recipient_id = $request->recepient_id;
 
         $data->save();
+
 
         $to = $data->recipient_id;
         $from = $data->sender_id; // sending from and to user id when pressed enter
@@ -75,11 +96,10 @@ class ChatController extends Controller
     public function show($user_id)
     {
         $my_id = Auth::id();
-
         $to = \App\User::where('id', $user_id)->first();
         return view('chat/index', ['to' => $to]);
     }
-    public function showContact()
+    public function showContact($id)
     {
         $contacts = DB::table('users as u')
             ->select('u.*')
@@ -87,11 +107,13 @@ class ChatController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        return view('chat/contacts', ['contacts' => $contacts]);
+        return view('chat/contacts', ['contacts' => $contacts, 'recipient_id' => $id]);
     }
     public function showMessages($user_id)
     {
         $my_id = Auth::id();
+        \App\Message::where(['sender_id' => $user_id, 'recipient_id' => $my_id])->update(['has_read' => 1]);
+
         DB::enableQueryLog();
         // ambil message
         $messages = DB::table('messages as m')
