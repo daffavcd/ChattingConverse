@@ -36,12 +36,12 @@
                     <span>You: </span>
                     @endif
                     @endif
-                    @if(@$item->type=='image')
-                    <i class="fa fa-camera "></i>Photo</p>
-                @elseif(@$item->type=='file')
-                <i class="fa fa-file-text "></i>{{$item->file}}</p>
+                    @if(@$last->type=='image')
+                    <i class="fa fa-camera "></i>&nbspPhoto</p>
+                @elseif(@$last->type=='file')
+                <i class="fa fa-file-text "></i>&nbsp{{$last->file}}</p>
                 @else
-                {{$item->text}}</p>
+                {{$last->text}}</p>
                 @endif
             </div>
         </div>

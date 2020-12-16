@@ -264,8 +264,7 @@
 	    form_data.append("recepient_id", recepient_id)                 // Adding extra parameters to form_data
         form_data.append("_token", $("#csrf").val()) 
         form_data.append("text", message)
-
-        if (message != '' && recepient_id != '' && cek_upload =='') {
+        if (message!= '' && recepient_id!= '' && cek_upload=='') {
             $("#text").val('');
             $.ajax({
                 type: "POST",
@@ -283,7 +282,7 @@
                     scrollToBottom();
                 }
             });
-        }else if(recepient_id != '' && file_data !=''){
+        }else if(recepient_id != '' && cek_upload !=''){
             $("#text").val('');
             $.ajax({
                 type: "POST",
@@ -300,12 +299,12 @@
                     $('#preview').fadeOut();
                     $('#messages').show();
                     $('#upload').val(null);
+                    $("#text").prop('disabled', false);
+                    $('#text').attr("placeholder", "Write your message...");
                     scrollToBottom();
                 }
             });
         }
-        $("#text").prop('disabled', false);
-        $('#text').attr("placeholder", "Write your message...");
     }
 </script>
 {{-- DROPDOWN SCRIPT --}}

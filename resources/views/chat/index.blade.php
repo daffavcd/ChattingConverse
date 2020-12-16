@@ -45,6 +45,12 @@
         var file = input.files[0];
         var fileType = file["type"];
         var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+
+        const size =  (input.files[0].size / 1024 / 1024).toFixed(2); 
+        if(size > 2){
+            alert('File must be less than 2 MB!');
+            $('#upload').val(null);
+        }else{
         if ($.inArray(fileType, validImageTypes) < 0) {
             $("#text").prop('disabled', true);
             $('#text').attr("placeholder", "You can't add caption on a document file.");
@@ -69,6 +75,7 @@
                $('#preview').fadeIn();
            }
         }
+    }
     
     }
 
@@ -79,6 +86,8 @@ $("#upload").change(function(){
 
 function closePreview(){
     $('#preview').fadeOut();
+    $("#text").prop('disabled', false);
+    $('#text').attr("placeholder", "Write your message...");
     $('#messages').show();
     $('#upload').val(null);
 }
