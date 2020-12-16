@@ -1,4 +1,5 @@
-<p align="center"><a href="https://thesatanictemple.com/" target="_blank"><img src="https://image.freepik.com/free-vector/baphomet-cute-kawaii_60223-36.jpg" style="width:300px"></a></p>
+<p align="center"><a href="https://thesatanictemple.com/" target="_blank"><img src="https://image.freepik.com/free-vector/baphomet-cute-kawaii_60223-36.jpg" width="300" ></a></p>
+
 
 # REPORT BUG HERE (*AS FAR AS WE KNOW)
 ```bash
@@ -11,8 +12,10 @@ dont forget to delete this list when its already done.
 - Belum ada loading / skeleton css sebelum up.
 - Background chat ganti (noodle art or else)
 ## NOTE BACKEND BAPHOMET-CONVERSE
-- Search contact
-- Unreaded message start from di tampilan chat
+- Search contact.
+- Unreaded message start from di tampilan chat.
+- Buka contact scroll tidak langsung ke bawah karena image belum terload(*gunakan skeleton).
+- Chat shows 10 limit only ? => scroll ke atas untuk load old chat.
 ## HAVENT DONE WHATSOEVER
 - Contact (selama ini langsung connect ke tabel users)
 - Group chat
