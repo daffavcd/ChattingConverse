@@ -19,8 +19,9 @@ dont forget to delete this list when its already done.
 - Chat shows 10 limit only => scroll ke atas untuk load old chat? 
 - Suara notif saat chat masuk & saat terima chat dari contact yang diklik
 - Image dowload dulu sebelum bisa di lihat?
-- Optimize speed saat kirim chat(ganti tidak pake metode load)*
 - Gunakan cache
+- Saat recipient dan from sama text not read auto readed karena saat terima pusher langsung masuk fungsi update
+- Encrypt message?
 ## HAVENT DONE WHATSOEVER
 - Contact (selama ini langsung connect ke tabel users)
 - Group chat
