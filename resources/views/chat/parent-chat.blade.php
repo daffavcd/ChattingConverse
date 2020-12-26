@@ -262,6 +262,8 @@
         
         var date= '<?php echo date("ymdhis") ?>';
         var filename = date + '_'+ $("#upload").val().split('\\').pop();
+        var url = '{{ asset('/storage/file') }}' +'/'+ filename;
+
         var file_data = $("#upload").prop("files")[0];
         var form_data = new FormData();                  
 	    form_data.append("file", file_data)            
@@ -271,27 +273,10 @@
         form_data.append("type", type)
 	    form_data.append("date", date)                 // Adding extra parameters to form_data
         if ((message!= '' && recepient_id!= '' && cek_upload=='') || (recepient_id != '' && cek_upload !='')) {
-            if(type=='photo'){
-                $('#preview').fadeOut();
-                $('#messages').show();
-                $('#upload').val(null);
-                $("#text").prop('disabled', false);
-                $('#text').attr("placeholder", "Write your message...");
+            if(type==''){
                 $("#text").val('');
-                $('<li class="sent"><img src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}" alt="" /><p><div class="file-preview" style="float:left !important;color: #f5f5f5;"><img class="file-show image-show" src="{{asset("storage/file/'+ filename +'")}}" title="'+message+'"alt="image error" />'+ (message!='' ? '<div class="container-file">':'')+ message +'</div></div></p></li>').appendTo($('.messages ul'));
-                $('.contact.active .preview').html('<span>You: </span>' + '<i class="fa fa-camera "></i>&nbspPhoto</p>');
-            }else if(type=='file'){
-                $('#preview').fadeOut();
-                $('#messages').show();
-                $('#upload').val(null);
-                $("#text").prop('disabled', false);
-                $('#text').attr("placeholder", "Write your message...");
 
-                $('<li class="sent"><img src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}" alt="" /><div class="file-preview-2" style="float:left !important;color: #f5f5f5;"><a href="{{asset("storage/file/'+ filename +'")}}" class="link-file" target="_blank"><i class="fa fa-file" id="file_preview" aria-hidden="true"></i><p style="padding:0px" class="link-file">&nbsp;'+ filename +'</p></a></div></li>').appendTo($('.messages ul'));
-                $('.contact.active .preview').html('<span>You: </span>' + '<i class="fa fa-file-text "></i>&nbsp'+ filename +'</p>');
-            }else{
-                $("#text").val('');
-               
+                $('<li class="sent"><img src="{{asset("storage/profile_pict/".$myprofile->profile_picture)}}" alt="" /><p>' + message + '</p></li>').appendTo($('.messages ul'));
                 $('.contact.active .preview').html('<span>You: </span>' + message);
             }
             $.ajax({
@@ -305,7 +290,30 @@
                 },
                 error: function (jqXHR, status, err) {
                 },
-                complete: function () {   
+                complete: function () {
+                    if(type=='photo'){
+                        $('#preview').fadeOut();
+                        $('#messages').show();
+                        $('#upload').val(null);
+                        $("#text").prop('disabled', false);
+                        $('#text').attr("placeholder", "Write your message...");
+                        $("#text").val('');
+                        $('<li class="sent"><img src="{{asset("storage/profile_pict/".$myprofile->profile_picture)}}" alt="" /><div class="file-preview" style="float:left !important;color: #f5f5f5;"><img class="file-show image-show" src="'+ url +'" title="'+message+'"alt="image error" />'+ 
+                        (message!='' ? '<div class="container-file">' + message + '</div>' : '') +
+                        '</div></li>').appendTo($('.messages ul'));
+                        $('.contact.active .preview').html('<span>You: </span>' + '<i class="fa fa-camera "></i>&nbspPhoto</p>');
+                        $("#type").val('');
+                    }else if(type=='file'){
+                        $('#preview').fadeOut();
+                        $('#messages').show();
+                        $('#upload').val(null);
+                        $("#text").prop('disabled', false);
+                        $('#text').attr("placeholder", "Write your message...");
+
+                        $('<li class="sent"><img src="{{asset("storage/profile_pict/".$myprofile->profile_picture)}}" alt="" /><div class="file-preview-2" style="float:left !important;color: #f5f5f5;"><a href="'+url+'" class="link-file" target="_blank"><i class="fa fa-file" id="file_preview" aria-hidden="true"></i><p style="padding:0px" class="link-file">&nbsp;'+ filename +'</p></a></div></li>').appendTo($('.messages ul'));
+                        $('.contact.active .preview').html('<span>You: </span>' + '<i class="fa fa-file-text "></i>&nbsp'+ filename +'</p>');
+                        $("#type").val('');
+                    }   
                     scrollToBottom();
                 }
             });

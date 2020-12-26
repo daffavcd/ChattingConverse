@@ -55,7 +55,7 @@ class ChatController extends Controller
         $user = Auth::user();
         $data = new \App\Message;
 
-        if (!empty($request->file)) {
+        if ($request->file!='undefined') {
             $extension = $request->file('file')->extension();
             $waktu = $request->date;
             $name_file = $waktu . '_' . $request->file('file')->getClientOriginalName();
