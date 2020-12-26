@@ -1,4 +1,5 @@
 require('./bootstrap');
+import * as PusherPushNotifications from "@pusher/push-notifications-web"
 
 // const app = new Vue({
 //     el: '#app',

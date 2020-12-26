@@ -13,13 +13,13 @@ use Illuminate\Queue\SerializesModels;
 class MessageSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $to,$from;
+    public $to, $from;
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($to,$from)
+    public function __construct($to, $from)
     {
         $this->to = $to;
         $this->from = $from;
@@ -32,10 +32,10 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('my-channel');
+        return new Channel('my-channel_'.$this->to);
     }
     public function broadcastAs()
     {
-        return 'message-sent';
+        return "message-sent_".$this->to;
     }
 }

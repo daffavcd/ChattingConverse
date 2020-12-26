@@ -57,7 +57,7 @@ class ChatController extends Controller
 
         if (!empty($request->file)) {
             $extension = $request->file('file')->extension();
-            $waktu = date('ymdhis');
+            $waktu = $request->date;
             $name_file = $waktu . '_' . $request->file('file')->getClientOriginalName();
             $data->file = $name_file;
             $request->file('file')->storeAs(
@@ -66,9 +66,9 @@ class ChatController extends Controller
                 'public'
             );
             // untuk mempermudah preview saat proses pengambilan data
-            if($extension=='jpg' || $extension=='png' || $extension=='jpeg'){
+            if ($extension == 'jpg' || $extension == 'png' || $extension == 'jpeg') {
                 $data->type = 'image';
-            }else{
+            } else {
                 $data->type = 'file';
             }
         }
@@ -112,9 +112,16 @@ class ChatController extends Controller
     public function showMessages($user_id)
     {
         $my_id = Auth::id();
-        \App\Message::where(['sender_id' => $user_id, 'recipient_id' => $my_id])->update(['has_read' => 1]);
 
         DB::enableQueryLog();
+        $total_unread = DB::table('messages as m')
+            ->select(DB::raw('count(*) as not_read'))
+            ->where([
+                ['m.recipient_id', '=', Auth::id()],
+                ['m.sender_id', '=', $user_id],
+            ])
+            ->where('has_read', 0)
+            ->first();
         // ambil message
         $messages = DB::table('messages as m')
             ->select('m.*', 'u.name as sender_name', 'u2.name as recipient_name', 'u.profile_picture as sender_pp')
@@ -131,8 +138,9 @@ class ChatController extends Controller
             ->orderBy('m.id', 'asc')
             ->get();
         // dd($messages);
+        \App\Message::where(['sender_id' => $user_id, 'recipient_id' => $my_id])->update(['has_read' => 1]);
         $to = \App\User::where('id', $user_id)->first();
-        return view('chat/messages', ['messages' => $messages], ['to' => $to]);
+        return view('chat/messages', ['messages' => $messages, 'to' => $to, 'total_unread' => $total_unread]);
     }
 
     /**

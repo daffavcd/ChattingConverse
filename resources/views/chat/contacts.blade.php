@@ -41,7 +41,7 @@
                 @elseif(@$last->type=='file')
                 <i class="fa fa-file-text "></i>&nbsp{{$last->file}}</p>
                 @else
-                {{$last->text}}</p>
+                {{@$last->text}}</p>
                 @endif
             </div>
         </div>

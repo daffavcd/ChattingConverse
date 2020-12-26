@@ -141,7 +141,7 @@
                                 @elseif(@$last->type=='file')
                                 <i class="fa fa-file-text "></i>&nbsp{{$last->file}}</p>
                                 @else
-                                {{$last->text}}</p>
+                                {{@$last->text}}</p>
                                 @endif
                             </div>
                         </div>
@@ -165,23 +165,22 @@
     <!-- partial -->
 </body>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
 {{-- SCRIPT REALTIME --}}
 <script>
     var my_id = "{{ Auth::id() }}";
     var recepient_id = null;
     $(document).ready(function () {
+        
         Pusher.logToConsole = true;
         var pusher = new Pusher('ea26d6c5f6515d01e62a', {
             cluster: 'ap1'
         });
         //Live channel
-        var channel = pusher.subscribe('my-channel');
-        channel.bind('message-sent', function(data) {
+        var channel = pusher.subscribe('my-channel_'+my_id);
+        channel.bind('message-sent_'+my_id, function(data) {
             // alert("idku "+ my_id + ",gambardiklik " + recepient_id + ",channel.from " + data.from + ",channel.to " + data.to);
-            if(data.to == my_id  && data.from == recepient_id){
-                loadChat();
-                loadContact(recepient_id);
-            }else if(data.from == my_id && data.to == recepient_id){
+            if(recepient_id== data.from){
                 loadChat();
                 loadContact(recepient_id);
             }else{
@@ -254,36 +253,47 @@
         return false;
         }
     });
+    </script>
+    <script>
     function newMessage() {
         cek_upload =$("#upload").val()
         message = $("#text").val();
-
+        type = $("#type").val();
+        
+        var date= '<?php echo date("ymdhis") ?>';
+        var filename = date + '_'+ $("#upload").val().split('\\').pop();
         var file_data = $("#upload").prop("files")[0];
         var form_data = new FormData();                  
 	    form_data.append("file", file_data)            
 	    form_data.append("recepient_id", recepient_id)                 // Adding extra parameters to form_data
         form_data.append("_token", $("#csrf").val()) 
         form_data.append("text", message)
-        if (message!= '' && recepient_id!= '' && cek_upload=='') {
-            $("#text").val('');
-            $.ajax({
-                type: "POST",
-                url: "chat",
-                data: {
-                    _token: $("#csrf").val(),
-                    recepient_id:recepient_id,text:message
-                },
-                cache: false,
-                success: function (data) {
-                },
-                error: function (jqXHR, status, err) {
-                },
-                complete: function () {
-                    scrollToBottom();
-                }
-            });
-        }else if(recepient_id != '' && cek_upload !=''){
-            $("#text").val('');
+        form_data.append("type", type)
+	    form_data.append("date", date)                 // Adding extra parameters to form_data
+        if ((message!= '' && recepient_id!= '' && cek_upload=='') || (recepient_id != '' && cek_upload !='')) {
+            if(type=='photo'){
+                $('#preview').fadeOut();
+                $('#messages').show();
+                $('#upload').val(null);
+                $("#text").prop('disabled', false);
+                $('#text').attr("placeholder", "Write your message...");
+                $("#text").val('');
+                $('<li class="sent"><img src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}" alt="" /><p><div class="file-preview" style="float:left !important;color: #f5f5f5;"><img class="file-show image-show" src="{{asset("storage/file/'+ filename +'")}}" title="'+message+'"alt="image error" />'+ (message!='' ? '<div class="container-file">':'')+ message +'</div></div></p></li>').appendTo($('.messages ul'));
+                $('.contact.active .preview').html('<span>You: </span>' + '<i class="fa fa-camera "></i>&nbspPhoto</p>');
+            }else if(type=='file'){
+                $('#preview').fadeOut();
+                $('#messages').show();
+                $('#upload').val(null);
+                $("#text").prop('disabled', false);
+                $('#text').attr("placeholder", "Write your message...");
+
+                $('<li class="sent"><img src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}" alt="" /><div class="file-preview-2" style="float:left !important;color: #f5f5f5;"><a href="{{asset("storage/file/'+ filename +'")}}" class="link-file" target="_blank"><i class="fa fa-file" id="file_preview" aria-hidden="true"></i><p style="padding:0px" class="link-file">&nbsp;'+ filename +'</p></a></div></li>').appendTo($('.messages ul'));
+                $('.contact.active .preview').html('<span>You: </span>' + '<i class="fa fa-file-text "></i>&nbsp'+ filename +'</p>');
+            }else{
+                $("#text").val('');
+               
+                $('.contact.active .preview').html('<span>You: </span>' + message);
+            }
             $.ajax({
                 type: "POST",
                 url: "chat",
@@ -295,12 +305,7 @@
                 },
                 error: function (jqXHR, status, err) {
                 },
-                complete: function () {
-                    $('#preview').fadeOut();
-                    $('#messages').show();
-                    $('#upload').val(null);
-                    $("#text").prop('disabled', false);
-                    $('#text').attr("placeholder", "Write your message...");
+                complete: function () {   
                     scrollToBottom();
                 }
             });

@@ -1,5 +1,21 @@
 <ul>
+    <div class="loader"></div>
+    <?php
+        $check=0;
+    ?>
     @foreach ($messages as $item)
+    <?php
+        if ($item->has_read==0 && $item->sender_id !=Auth::id()) {
+            $check+=1;
+        }
+        if ($check==1) {
+            ?>
+    <div class="unread">
+        <div class="unread2">{{@$total_unread->not_read}} UNREAD MESSAGES</div>
+    </div>
+    <?php
+        }
+    ?>
     <li class="@if ($item->sender_id == Auth::id()) sent @else replies @endif">
         <img src="{{asset('storage/profile_pict/'.$item->sender_pp) }}" alt="" />
         @if($item->type==null)
@@ -9,7 +25,8 @@
         <div class="file-preview" @if ($item->sender_id == Auth::id()) style="float:left !important;color: #f5f5f5;"
             @else
             style="float:right !important;background:#f5f5f5 !important" @endif>
-            <img class="file-show image-show" src="{{asset('storage/file/'.$item->file)}}" title="{{$item->text}}" alt="image error" />
+            <img class="file-show image-show" src="{{asset('storage/file/'.$item->file)}}" title="{{$item->text}}"
+                alt="image error" />
             @if($item->text!==null)
             <div class="container-file">
                 {{$item->text}}
@@ -38,6 +55,7 @@
     <div id="caption"></div>
 </div>
 <script>
+    
     var modal = document.getElementById("myModal");
     
     var modalImg = document.getElementById("img01");
