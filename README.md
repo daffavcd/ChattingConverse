@@ -22,6 +22,7 @@ dont forget to delete this list when its already done.
 - Gunakan cache
 - Saat recipient dan from sama text not read auto readed karena saat terima pusher langsung masuk fungsi update
 - Encrypt message?
+- Bug dalam penamaan user minim harus 2 atau 3 tidak bisa 1
 ## HAVENT DONE WHATSOEVER
 - Contact (selama ini langsung connect ke tabel users)
 - Group chat
