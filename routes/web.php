@@ -11,8 +11,12 @@
 |
 */
 Auth::routes();
-Route::get('/','Chat\ChatController@index');
-Route::get('/showContact/{id}','Chat\ChatController@showContact');
+Route::get('/', 'Chat\ChatController@index');
+Route::get('/showContact/{id}', 'Chat\ChatController@showContact');
 Route::resource('chat', 'Chat\ChatController');
-Route::get('/chat/{id}/showMessages','Chat\ChatController@showMessages');
+Route::get('/chat/{id}/showMessages', 'Chat\ChatController@showMessages');
 
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('profile', 'ProfileController@edit')->name('profile.edit');
+    Route::patch('profile', 'ProfileController@update')->name('profile.update');
+});

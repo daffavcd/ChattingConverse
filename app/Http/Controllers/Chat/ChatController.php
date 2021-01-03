@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Chat;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Broadcast;
-use Pusher\Pusher;
-use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
 class ChatController extends Controller
@@ -18,10 +16,12 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function __construct()
     {
         $this->middleware('auth');
     }
+
     public function index()
     {
         $contacts = DB::table('users as u')
@@ -55,7 +55,7 @@ class ChatController extends Controller
         $user = Auth::user();
         $data = new \App\Message;
 
-        if ($request->file!='undefined') {
+        if ($request->file != 'undefined') {
             $extension = $request->file('file')->extension();
             $waktu = $request->date;
             $name_file = $waktu . '_' . $request->file('file')->getClientOriginalName();
@@ -80,7 +80,6 @@ class ChatController extends Controller
         $data->recipient_id = $request->recepient_id;
 
         $data->save();
-
 
         $to = $data->recipient_id;
         $from = $data->sender_id; // sending from and to user id when pressed enter
