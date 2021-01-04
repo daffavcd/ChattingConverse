@@ -158,16 +158,20 @@
                     <span>Add contact</span>
                 </button>
                 <!-- <button type="button" id="settings" data-toggle="modal" data-target="#settingsModal"><i class="fa fa-cog fa-fw" aria-hidden="true"></i>          -->
-                <button id="settings">
-                    <a href="profile" style="color: #e1f4f3;"><span>Settings</span></a>
-                </button>
+                <a href="{{ route('logout') }}" id="settings" onclick="event.preventDefault();
+                document.getElementById('logout-form').submit();">
+                    <i class="fa fa-cog fa-fw" aria-hidden="true"></i>Logout</span></a>
+                </a>    
 
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
                 <!-- </button> -->
-                @include('chat.settings')
+                {{-- @include('chat.settings') --}}
             </div>
         </div>
         <div class="content" id="content">
-            <img src="{!! asset('image-core/doodledevil.jpg') !!}" class="img-fluid" alt="bgchat">
+            <img src="{!! asset('image-core/doodledevil.jpg') !!}" style="width: 300px;margin-left: 330px;margin-top: 115px;" class="img-fluid" alt="bgchat">
         </div>
     </div>
     <!-- partial -->
