@@ -98,6 +98,25 @@ class ChatController extends Controller
         $to = \App\User::where('id', $user_id)->first();
         return view('chat/index', ['to' => $to]);
     }
+    public function findContact($key)
+    {
+        if($key=='kosong'){
+            $contacts = DB::table('users as u')
+            ->select('u.*')
+            ->where('u.id', '!=', Auth::id())
+            ->orderByDesc('id')
+            ->get();
+        }else{
+            $contacts = DB::table('users as u')
+            ->select('u.*')
+            ->where('u.id', '!=', Auth::id())
+            ->where('name', 'like', '%'.$key.'%')
+            ->get();
+        }
+       
+
+        return view('chat/contacts', ['contacts' => $contacts]);
+    }
     public function showContact($id)
     {
         $contacts = DB::table('users as u')

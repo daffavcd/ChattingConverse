@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat</title>
-    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,300' rel='stylesheet'
+        type='text/css'>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://use.typekit.net/hoy3lrg.js"></script>
@@ -54,7 +55,8 @@
         <div id="sidepanel">
             <div id="profile">
                 <div class="wrap">
-                    <img id="profile-img" src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}" class="online" alt="" />
+                    <img id="profile-img" src="{{asset('storage/profile_pict/'.$myprofile->profile_picture)}}"
+                        class="online" alt="" />
                     @php
                     $name =explode(' ',$myprofile->name);
                     @endphp
@@ -88,10 +90,14 @@
             </div>
             <div id="search">
                 <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
-                <input type="text" placeholder="Search contacts..." />
+                <input type="text" id="find_contact" placeholder="Search contacts..." />
             </div>
             <div id="contacts">
-                <ul>
+                <div style="text-align: center;display: none" id="loading_image">
+                    <i class="fa fa-circle-o-notch fa-spin"
+                        style="font-size:24px;font-size: 30px;margin-top: 25px;"></i>
+                </div>
+                <ul id="get_contact">
                     @foreach ($contacts as $item)
                     <?php
                     $notif = DB::table('messages as m')
@@ -168,6 +174,29 @@
 </body>
 <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
 <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+<script>
+    $( "#find_contact" ).keyup(function() {
+        key = $(this).val();
+        if(key==''){
+            key = 'kosong';
+        }
+        $.ajax({
+            type: "get",
+            url: "findContact/" + key, 
+            data: "",
+            cache: false,
+            beforeSend: function() {
+            $('#loading_image').show();
+            $('#get_contact').hide();
+            },
+            success: function(data) {
+                $('#get_contact').html(data);
+                $('#get_contact').show();
+                $('#loading_image').hide();
+            }
+        });
+});
+</script>
 {{-- SCRIPT REALTIME --}}
 <script>
     var my_id = "{{ Auth::id() }}";
@@ -240,7 +269,7 @@
             data: "",
             cache: false,
             success: function(data) {
-                $('#contacts').html(data);
+                $('#get_contact').html(data);
             }
         });
     }
