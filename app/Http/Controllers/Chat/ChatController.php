@@ -24,12 +24,13 @@ class ChatController extends Controller
 
     public function index()
     {
-        $contacts = DB::table('users as u')
+        $contacts = DB::table('contacts as c1')
             ->select('u.*')
-            ->where('u.id', '!=', Auth::id())
-            ->orderByDesc('id')
+            ->leftjoin('users as u', 'u.id', '=', 'c1.user2_id')
+            ->where('c1.user_id', Auth::id())
             ->get();
 
+        // dd($contacts);
         $myprofile = \App\User::where('id', Auth::id())->first();
         return view('chat/parent-chat', ['contacts' => $contacts, 'myprofile' => $myprofile]);
     }
@@ -98,12 +99,32 @@ class ChatController extends Controller
         $to = \App\User::where('id', $user_id)->first();
         return view('chat/index', ['to' => $to]);
     }
+    public function findContact($key)
+    {
+        if ($key == 'kosong') {
+            $contacts = DB::table('contacts as c1')
+                ->select('u.*')
+                ->leftjoin('users as u', 'u.id', '=', 'c1.user2_id')
+                ->where('c1.user_id', Auth::id())
+                ->get();
+        } else {
+            $contacts = DB::table('contacts as c1')
+                ->select('u.*')
+                ->leftjoin('users as u', 'u.id', '=', 'c1.user2_id')
+                ->where('c1.user_id', Auth::id())
+                ->where('u.name', 'like', '%' . $key . '%')
+                ->get();
+        }
+
+
+        return view('chat/contacts', ['contacts' => $contacts]);
+    }
     public function showContact($id)
     {
-        $contacts = DB::table('users as u')
+        $contacts = DB::table('contacts as c1')
             ->select('u.*')
-            ->where('u.id', '!=', Auth::id())
-            ->orderByDesc('id')
+            ->leftjoin('users as u', 'u.id', '=', 'c1.user2_id')
+            ->where('c1.user_id', Auth::id())
             ->get();
 
         return view('chat/contacts', ['contacts' => $contacts, 'recipient_id' => $id]);

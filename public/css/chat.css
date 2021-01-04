@@ -744,6 +744,8 @@ body {
 	border-top-right-radius: 2px !important;
 	width: 100% !important;
 	margin: 0 !important;
+   	height: auto !important;
+  	min-height:150px !important;
 	border-radius: 5px !important;
 	float: none !important;
 }

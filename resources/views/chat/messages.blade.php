@@ -32,7 +32,7 @@
         <div class="file-preview" @if ($item->sender_id == Auth::id()) style="float:left !important;color: #f5f5f5;"
             @else
             style="float:right !important;background:#f5f5f5 !important" @endif>
-            <img class="file-show image-show" src="{{asset('storage/file/'.$item->file)}}" title="{{$item->text}}" alt="image error" />
+            <img class="file-show image-show lozad" style="width: 100%"!important src="{{asset('storage/file/'.$item->file)}}" title="{{$item->text}}" alt="image error" />
             @if($item->text!==null)
             <div class="container-file">
                 {{$item->text}}

@@ -14,7 +14,6 @@ dont forget to delete this list when its already done.
 - Tampilan kanan masih polos saat habis login(belum klik contact)
 - Cek unread messages css (ganti warna,css div="unread" tidak mau full sampai ke kanan kehalang scroll)
 ## NOTE BACKEND BAPHOMET-CONVERSE
-- Search contact
 - Buka contact scroll tidak langsung ke bawah karena image belum terload(gunakan skeleton)
 - Chat shows 10 limit only => scroll ke atas untuk load old chat? 
 - Suara notif saat chat masuk & saat terima chat dari contact yang diklik
@@ -23,6 +22,11 @@ dont forget to delete this list when its already done.
 - Saat recipient dan from sama text not read auto readed karena saat terima pusher langsung masuk fungsi update
 - Encrypt message?
 - Bug dalam penamaan user minim harus 2 atau 3 tidak bisa 1
+- Contact Belum tampil berdasarkan desc messege terbaru
+- Message belum tampil sebelum user menambah contact kedua2 nya 
+```bash
+Logika message: contact harus tampil secara desc berdasarkan message terbaru,walaupun recipient belum menambah contact dan sender mengirim pesan ke recipient, pesan harus sudah tampil
+```
 ## HAVENT DONE WHATSOEVER
 - Contact (selama ini langsung connect ke tabel users)
 - Group chat

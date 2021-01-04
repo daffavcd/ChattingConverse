@@ -15,6 +15,7 @@ Route::get('/', 'Chat\ChatController@index');
 Route::get('/showContact/{id}', 'Chat\ChatController@showContact');
 Route::resource('chat', 'Chat\ChatController');
 Route::get('/chat/{id}/showMessages', 'Chat\ChatController@showMessages');
+Route::get('/findContact/{key}', 'Chat\ChatController@findContact');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('profile', 'ProfileController@edit')->name('profile.edit');

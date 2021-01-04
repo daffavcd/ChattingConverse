@@ -1,4 +1,3 @@
-<ul>
     @foreach ($contacts as $item)
     <?php
      $notif=DB::table('messages as m')
@@ -52,4 +51,3 @@
         @endif
     </li>
     @endforeach
-</ul>
