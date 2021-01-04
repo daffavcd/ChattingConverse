@@ -22,6 +22,11 @@ dont forget to delete this list when its already done.
 - Saat recipient dan from sama text not read auto readed karena saat terima pusher langsung masuk fungsi update
 - Encrypt message?
 - Bug dalam penamaan user minim harus 2 atau 3 tidak bisa 1
+- Contact Belum tampil berdasarkan desc messege terbaru
+- Message belum tampil sebelum user menambah contact kedua2 nya 
+```bash
+Logika message: contact harus tampil secara desc berdasarkan message terbaru,walaupun recipient belum menambah contact dan sender mengirim pesan ke recipient, pesan harus sudah tampil
+```
 ## HAVENT DONE WHATSOEVER
 - Contact (selama ini langsung connect ke tabel users)
 - Group chat
