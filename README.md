@@ -14,7 +14,6 @@ dont forget to delete this list when its already done.
 - Tampilan kanan masih polos saat habis login(belum klik contact)
 - Cek unread messages css (ganti warna,css div="unread" tidak mau full sampai ke kanan kehalang scroll)
 ## NOTE BACKEND BAPHOMET-CONVERSE
-- Search contact
 - Buka contact scroll tidak langsung ke bawah karena image belum terload(gunakan skeleton)
 - Chat shows 10 limit only => scroll ke atas untuk load old chat? 
 - Suara notif saat chat masuk & saat terima chat dari contact yang diklik

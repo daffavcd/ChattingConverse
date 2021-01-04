@@ -295,7 +295,7 @@
 
         var date = '<?php echo date("ymdhis") ?>';
         var filename = date + '_' + $("#upload").val().split('\\').pop();
-        var url = '{{ asset(' / storage / file ') }}' + '/' + filename;
+        var url = '{{ asset("storage/file") }}' + '/' + filename;
 
         var file_data = $("#upload").prop("files")[0];
         var form_data = new FormData();
