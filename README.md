@@ -2,37 +2,37 @@
 Here i'm trying to do a demostrate using 2 user (Daffa Athallah & Rheia Toteris)
 
 ## Landing page (Login)
-<img src="/image_read/1.jpeg" title="Screenshot 1"/>
+<img src="/image_read/1.png" title="Screenshot 1"/>
 
 ## Home page
-<img src="/image_read/2.jpeg" title="Screenshot 2"/>
+<img src="/image_read/2.png" title="Screenshot 2"/>
 
 ## If you click your contact
-<img src="/image_read/3.jpeg" title="Screenshot 3"/>
+<img src="/image_read/3.png" title="Screenshot 3"/>
 
 ## Try to send any chat to Rheia
-<img src="/image_read/4.jpeg" title="Screenshot 4"/>
+<img src="/image_read/4.png" title="Screenshot 4"/>
 
 ## Rheia page when the message already sent
-<img src="/image_read/5.jpeg" title="Screenshot 5"/>
+<img src="/image_read/5.png" title="Screenshot 5"/>
 
 ## Rheia opening daffa's message
-<img src="/image_read/6.jpeg" title="Screenshot 6"/>
+<img src="/image_read/6.png" title="Screenshot 6"/>
 
 ## Rheia sending chat to daffa
-<img src="/image_read/7.jpeg" title="Screenshot 7"/>
+<img src="/image_read/7.png" title="Screenshot 7"/>
 
 ## Daffa opening rheia's answer 
-<img src="/image_read/8.jpeg" title="Screenshot 8"/>
+<img src="/image_read/8.png" title="Screenshot 8"/>
 
 ## Daffa sending image file to rheia
-<img src="/image_read/9.jpeg" title="Screenshot 9"/>
+<img src="/image_read/9.png" title="Screenshot 9"/>
 
 ## Rheia viewing image from daffa
-<img src="/image_read/10.jpeg" title="Screenshot 10"/>
+<img src="/image_read/10.png" title="Screenshot 10"/>
 
 ## You can click the image for zooming in
-<img src="/image_read/11.jpeg" title="Screenshot 11"/>
+<img src="/image_read/11.png" title="Screenshot 11"/>
 
 ## Chat App (Real-time using Pusher)
 
