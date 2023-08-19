@@ -4,17 +4,11 @@ Here i'm trying to do a demostrate using 2 user (Daffa Athallah & Rheia Toteris)
 ## Landing page (Login)
 <img src="/image_read/1.png" title="Screenshot 1"/>
 
-## Home page
-<img src="/image_read/2.png" title="Screenshot 2"/>
-
 ## If you click your contact
 <img src="/image_read/3.png" title="Screenshot 3"/>
 
 ## Try to send any chat to Rheia
 <img src="/image_read/4.png" title="Screenshot 4"/>
-
-## Rheia page when the message already sent
-<img src="/image_read/5.png" title="Screenshot 5"/>
 
 ## Rheia opening daffa's message
 <img src="/image_read/6.png" title="Screenshot 6"/>
@@ -41,8 +35,6 @@ This Project is for my thesis during Advance Web Programming Class,
 You can leave a comment or ask for contributor if you want to help me grow. Thanks 
 
 This project is real-time chatting app using Pusher with Jquery, i'm using template for this project but i'm really sorry i couldn't remember the link and the creator.
-
-<p align="center"><a href="https://thesatanictemple.com/" target="_blank"><img src="https://image.freepik.com/free-vector/baphomet-cute-kawaii_60223-36.jpg" width="300" ></a></p>
 
 # REPORT BUG HERE(AS FAR AS WE KNOW)
 ```bash
